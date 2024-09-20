@@ -1,17 +1,25 @@
-<template>
-    <p>{{ ($route as any).params.chapterId }}</p>
-    <p>{{ ($route as any).params.lessonId }}</p>
-    <p></p>
-</template>
+<script setup lang="ts">
+const course = useCourse();
+const route = useRoute();
 
-<script lang="ts">
-import { defineComponent } from "vue";
+const chapter: ComputedRef = computed(() => {
+    return course.chapters.find(
+        (chapter) => chapter.slug === route.params.chapterId,
+    );
+});
 
-export default defineComponent({
-    setup() {
-        return {};
-    },
+console.log(chapter.value);
+
+const lesson: ComputedRef = computed(() => {
+    return chapter.value.lessons.find(
+        (lesson: { slug: string }) => lesson.slug === route.params.lessonId,
+    );
 });
 </script>
 
-<style scoped></style>
+<template>
+    <h2>Lesson</h2>
+    <p>This is a lesson</p>
+    <p>{{ chapter.title }}</p>
+    <p>{{ lesson.title }}</p>
+</template>

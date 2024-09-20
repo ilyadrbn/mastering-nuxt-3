@@ -3,21 +3,22 @@ import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginVue from "eslint-plugin-vue";
 import eslintConfigPrettier from "eslint-config-prettier";
+import withNuxt from "./.nuxt/eslint.config.mjs";
 
-export default [
-  { files: ["**/*.{js,mjs,cjs,ts,vue}"] },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...pluginVue.configs["flat/recommended"],
-  eslintConfigPrettier,
-  {
-    files: ["**/*.vue"],
-    languageOptions: { parserOptions: { parser: tseslint.parser } },
-  },
-  {
-    rules: {
-      "vue/multi-word-component-names": "off",
+export default withNuxt([
+    { files: ["**/*.{js,mjs,cjs,ts,vue}"] },
+    { languageOptions: { globals: globals.browser } },
+    pluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
+    ...pluginVue.configs["flat/recommended"],
+    eslintConfigPrettier,
+    {
+        files: ["**/*.vue"],
+        languageOptions: { parserOptions: { parser: tseslint.parser } },
     },
-  },
-];
+    {
+        rules: {
+            "vue/multi-word-component-names": "off",
+        },
+    },
+]);
