@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import type { RouteNamedMap } from "vue-router/auto";
+import { NuxtRouteAnnouncer } from "../.nuxt/components";
+
 const { chapters } = useCourse();
 
-console.log(chapters);
+console.log(useCourse());
 </script>
 
 <template>
@@ -29,8 +32,12 @@ console.log(chapters);
                             <NuxtLink
                                 v-for="(lesson, index) in chapter.lessons"
                                 :key="lesson.downloadUrl"
-                                class="mb-2 inline-block font-medium text-slate-400 hover:text-slate-700"
-                                :to="`/course/chapter/${chapter.slug}/lesson/${lesson.slug}`"
+                                class="mb-2 inline-block font-medium text-slate-400 hover:text-blue-500"
+                                :to="lesson.path"
+                                :class="{
+                                    'text-blue-500':
+                                        lesson.path === ($route as any).path,
+                                }"
                                 >{{ index + 1 }}. {{ lesson.title }}</NuxtLink
                             >
                         </li>

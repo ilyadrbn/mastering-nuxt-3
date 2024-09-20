@@ -43,20 +43,22 @@ const lesson: ComputedRef = computed((): ILesson | null => {
         </p>
         <h2 class="m-0 text-3xl font-bold">{{ lesson.title }}</h2>
         <div class="mb-8 mt-2 flex space-x-4">
-            <a
+            <NuxtLink
                 v-if="lesson.sourceUrl"
-                class="text-md text-grey-500 font-normal"
-                :href="lesson.sourceUrl"
+                class="text-md text-grey-500 font-normal underline hover:text-blue-500"
+                :to="lesson.sourceUrl"
+                target="_blank"
             >
                 Download Source Code
-            </a>
-            <a
+            </NuxtLink>
+            <NuxtLink
                 v-if="lesson.downloadUrl"
                 class="text-md text-grey-500 font-normal underline hover:text-blue-500"
-                :href="lesson.downloadUrl"
+                :to="lesson.downloadUrl"
+                target="_blank"
             >
                 Download Video
-            </a>
+            </NuxtLink>
         </div>
         <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
         <p>{{ lesson.text }}</p>
