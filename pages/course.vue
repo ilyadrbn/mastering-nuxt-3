@@ -19,8 +19,7 @@
             </div>
 
             <div class="prose w-[65ch] rounded-md bg-white p-12">
-                <h2 class="font-bold">Lesson</h2>
-                <p>This is a lesson</p>
+                <NuxtPage />
             </div>
         </div>
     </div>
