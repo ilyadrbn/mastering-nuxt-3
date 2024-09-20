@@ -1,23 +1,8 @@
 <script setup lang="ts">
+import type { IChapter, ILesson } from "~/composables/useCourse";
+
 const course = useCourse();
 const route = useRoute();
-
-interface ILesson {
-    downloadUrl?: string;
-    sourceUrl?: string;
-    slug: string;
-    number: number;
-    text: string;
-    title: string;
-    videoId?: number;
-}
-
-interface IChapter {
-    title: string;
-    slug: string;
-    number: number;
-    lessons: ILesson[];
-}
 
 const chapter: ComputedRef = computed((): IChapter | null => {
     return (
