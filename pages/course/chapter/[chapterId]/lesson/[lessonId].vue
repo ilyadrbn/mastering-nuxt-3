@@ -34,8 +34,24 @@ const lesson: ComputedRef = computed((): ILesson | null => {
         ) ?? null
     );
 });
-</script>
 
+const titleMeta = computed((): string => {
+    return `${chapter.value.title} - ${lesson.value.title}` as string;
+});
+const nameMeta = computed((): string => {
+    return lesson.value.title;
+});
+/* ? Set page meta tags, title etc...
+ * @see https://nuxt.com/docs/getting-started/seo-meta#usehead */
+useHead({
+    title: titleMeta.value,
+    meta: [
+        {
+            name: nameMeta.value,
+        },
+    ] as object[],
+});
+</script>
 <template>
     <div>
         <p class="mb-1 mt-0 font-bold uppercase text-slate-400">

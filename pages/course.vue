@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { RouteNamedMap } from "vue-router/auto";
-import { NuxtRouteAnnouncer } from "../.nuxt/components";
-
 const { chapters } = useCourse();
 
 console.log(useCourse());
