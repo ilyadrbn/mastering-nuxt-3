@@ -12,5 +12,5 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
     },
-    modules: ["@nuxt/eslint"],
+    modules: ["@vueuse/nuxt", "@nuxt/eslint"],
 });

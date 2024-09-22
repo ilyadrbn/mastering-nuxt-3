@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { IChapter, ILesson } from "~/composables/useCourse";
+import type { RemovableRef } from "@vueuse/core";
 
 const course = useCourse();
 const route = useRoute();
@@ -44,11 +45,16 @@ useHead({
 ?       [false, false, false, false],
 ?       [false, false , false]
     ?] */
-const lessonsState: Ref<boolean[][]> = useState("lessonsState", () => {
-    return course.chapters.map((chapter) => {
+
+const lessonsState: RemovableRef<boolean[][]> = useLocalStorage(
+    "lessonsState",
+    course.chapters.map((chapter) => {
         return chapter.lessons.map(() => false);
-    });
-});
+    }),
+);
+
+// ? useState() - nuxt composable. its like session storage
+// ? useLocalStorage() - vueuse composable. written into localstorage
 </script>
 <template>
     <div>
@@ -76,12 +82,16 @@ const lessonsState: Ref<boolean[][]> = useState("lessonsState", () => {
         </div>
         <VideoPlayer v-if="lesson?.videoId" :video-id="lesson.videoId" />
         <p class="mb-4">{{ lesson?.text }}</p>
-
+        <!-- ? https://nuxt.com/docs/guide/concepts/rendering -->
+        <!-- ? https://nuxt.com/docs/api/components/client-only -->
+        <!-- я так понимаю <ClientOnly /> отключает сср для этого компонента и рендерит его на стороне клиента и по итогу отключает гидратацию. т.е. компонент грузится как в обычной SPA. Можно добавить в имя компонента  .client, будет то же самое "LessonCompleteButton.client.vue" -->
+        <!-- <ClientOnly> -->
         <LessonCompleteButton
             v-if="lesson && chapter"
             v-model:current-lesson-state="
                 lessonsState[chapter.number - 1][lesson.number - 1]
             "
         />
+        <!-- </ClientOnly> -->
     </div>
 </template>

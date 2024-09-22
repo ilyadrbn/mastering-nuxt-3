@@ -1,4 +1,3 @@
-import { is } from '../.nuxt/eslint-typegen';
 <template>
     <label
         class="cursor-pointer rounded px-4 py-2 font-bold text-white"
