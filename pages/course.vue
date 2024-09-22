@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const { chapters } = useCourse();
-
-console.log(useCourse());
+console.log(chapters)
 </script>
 
 <template>
@@ -29,14 +28,16 @@ console.log(useCourse());
                             <NuxtLink
                                 v-for="(lesson, index) in chapter.lessons"
                                 :key="lesson.downloadUrl"
-                                class="mb-2 inline-block font-medium text-slate-400 hover:text-blue-500"
+                                class="mb-2 inline-block font-medium hover:text-blue-500"
                                 :to="lesson.path"
-                                :class="{
-                                    'text-blue-500':
-                                        lesson.path === ($route as any).path,
-                                }"
-                                >{{ index + 1 }}. {{ lesson.title }}</NuxtLink
-                            >
+                                :class="
+                                    lesson.slug ===
+                                    ($route as any).params.lessonId
+                                        ? 'text-blue-500'
+                                        : 'text-gray-500'
+                                "
+                                >{{ index + 1 }}. {{ lesson.title }}
+                            </NuxtLink>
                         </li>
                     </ol>
                 </nav>
