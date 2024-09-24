@@ -112,3 +112,7 @@ This project uses the following scripts:
 -   `generate`: `nuxt generate`
 -   `preview`: `nuxt preview`
 -   `postinstall`: `nuxt prepare`
+
+## Link
+
+-   [Deploy](https://main--ilyadrbn-mastering-nuxt.netlify.app/course)

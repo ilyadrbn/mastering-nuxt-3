@@ -1,12 +1,5 @@
-<script setup lang="ts">
-const { chapters } = useCourse();
-console.log(chapters)
-</script>
-
 <template>
-    <div
-        class="flex h-full min-h-screen w-full flex-col items-center bg-gray-100 p-12"
-    >
+    <div>
         <div class="prose mb-12">
             <h1>
                 <span class="font-medium">
@@ -49,3 +42,12 @@ console.log(chapters)
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+const { chapters } = useCourse();
+
+// ? можно указать лэйаут так, а можно внутри app.vue файла в аттрибуте name
+// definePageMeta({
+//     layout: "custom",
+// });
+</script>

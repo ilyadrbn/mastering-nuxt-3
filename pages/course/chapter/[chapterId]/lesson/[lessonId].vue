@@ -1,3 +1,46 @@
+<template>
+    <div>
+        <p class="mb-1 mt-0 font-bold uppercase text-slate-400">
+            Lesson {{ chapter?.number }} - {{ lesson?.number }}
+        </p>
+        <h2 class="m-0 text-3xl font-bold">{{ lesson?.title }}</h2>
+        <div class="mb-8 mt-2 flex space-x-4">
+            <NuxtLink
+                v-if="lesson?.sourceUrl"
+                class="text-md text-grey-500 font-normal underline hover:text-blue-500"
+                :to="lesson.sourceUrl"
+                target="_blank"
+            >
+                Download Source Code
+            </NuxtLink>
+            <NuxtLink
+                v-if="lesson?.downloadUrl"
+                class="text-md text-grey-500 font-normal underline hover:text-blue-500"
+                :to="lesson.downloadUrl"
+                target="_blank"
+            >
+                Download Video
+            </NuxtLink>
+        </div>
+        <VideoPlayer
+            v-if="lesson?.videoId"
+            :video-id="lesson.videoId.toString()"
+        />
+        <p class="mb-4">{{ lesson?.text }}</p>
+        <!-- ? https://nuxt.com/docs/guide/concepts/rendering -->
+        <!-- ? https://nuxt.com/docs/api/components/client-only -->
+        <!-- я так понимаю <ClientOnly /> отключает сср для этого компонента и рендерит его на стороне клиента и по итогу отключает гидратацию. т.е. компонент грузится как в обычной SPA. Можно добавить в имя компонента  .client, будет то же самое "LessonCompleteButton.client.vue" -->
+        <!-- <ClientOnly> -->
+        <LessonCompleteButton
+            v-if="lesson && chapter"
+            v-model:current-lesson-state="
+                lessonsState[chapter.number - 1][lesson.number - 1]
+            "
+        />
+        <!-- </ClientOnly> -->
+    </div>
+</template>
+
 <script lang="ts" setup>
 import type { IChapter, ILesson } from "~/composables/useCourse";
 import type { RemovableRef } from "@vueuse/core";
@@ -36,8 +79,10 @@ useHead({
     meta: [
         {
             name: nameMeta.value,
+            property: "description",
+            content: titleMeta.value,
         },
-    ] as object[],
+    ],
 });
 
 /* ?[
@@ -56,42 +101,3 @@ const lessonsState: RemovableRef<boolean[][]> = useLocalStorage(
 // ? useState() - nuxt composable. its like session storage
 // ? useLocalStorage() - vueuse composable. written into localstorage
 </script>
-<template>
-    <div>
-        <p class="mb-1 mt-0 font-bold uppercase text-slate-400">
-            Lesson {{ chapter?.number }} - {{ lesson?.number }}
-        </p>
-        <h2 class="m-0 text-3xl font-bold">{{ lesson?.title }}</h2>
-        <div class="mb-8 mt-2 flex space-x-4">
-            <NuxtLink
-                v-if="lesson?.sourceUrl"
-                class="text-md text-grey-500 font-normal underline hover:text-blue-500"
-                :to="lesson.sourceUrl"
-                target="_blank"
-            >
-                Download Source Code
-            </NuxtLink>
-            <NuxtLink
-                v-if="lesson?.downloadUrl"
-                class="text-md text-grey-500 font-normal underline hover:text-blue-500"
-                :to="lesson.downloadUrl"
-                target="_blank"
-            >
-                Download Video
-            </NuxtLink>
-        </div>
-        <VideoPlayer v-if="lesson?.videoId" :video-id="lesson.videoId" />
-        <p class="mb-4">{{ lesson?.text }}</p>
-        <!-- ? https://nuxt.com/docs/guide/concepts/rendering -->
-        <!-- ? https://nuxt.com/docs/api/components/client-only -->
-        <!-- я так понимаю <ClientOnly /> отключает сср для этого компонента и рендерит его на стороне клиента и по итогу отключает гидратацию. т.е. компонент грузится как в обычной SPA. Можно добавить в имя компонента  .client, будет то же самое "LessonCompleteButton.client.vue" -->
-        <!-- <ClientOnly> -->
-        <LessonCompleteButton
-            v-if="lesson && chapter"
-            v-model:current-lesson-state="
-                lessonsState[chapter.number - 1][lesson.number - 1]
-            "
-        />
-        <!-- </ClientOnly> -->
-    </div>
-</template>

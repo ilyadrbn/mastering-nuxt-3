@@ -15,10 +15,6 @@
 const lessonState = defineModel<boolean>("currentLessonState", {
     default: false,
 });
-
-// function toggleLessonState() {
-//     lessonState.value = !lessonState.value;
-// }
 </script>
 
 <style scoped>
