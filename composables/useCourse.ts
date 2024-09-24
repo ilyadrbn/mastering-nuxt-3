@@ -5,7 +5,7 @@ interface ILesson {
     slug: string;
     number: number;
     path: string;
-    downloadUrl: string;
+    downloadUrl?: string;
     sourceUrl?: string;
     videoId?: number;
     text?: string;

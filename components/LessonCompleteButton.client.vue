@@ -6,7 +6,7 @@
             'bg-gray-500': !lessonState,
         }"
     >
-        <input type="checkbox" class="hidden" @input="toggleLessonState" />
+        <input v-model="lessonState" type="checkbox" class="hidden" />
         {{ lessonState ? "Completed!" : "Mark as complete" }}
     </label>
 </template>
@@ -16,9 +16,9 @@ const lessonState = defineModel<boolean>("currentLessonState", {
     default: false,
 });
 
-function toggleLessonState() {
-    lessonState.value = !lessonState.value;
-}
+// function toggleLessonState() {
+//     lessonState.value = !lessonState.value;
+// }
 </script>
 
 <style scoped>
