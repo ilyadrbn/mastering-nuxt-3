@@ -6,7 +6,12 @@
             'bg-gray-500': !lessonState,
         }"
     >
-        <input v-model="lessonState" type="checkbox" class="hidden" />
+        <input
+            v-model="lessonState"
+            type="checkbox"
+            class="hidden"
+            @input="handleError"
+        />
         {{ lessonState ? "Completed!" : "Mark as complete" }}
     </label>
 </template>
@@ -15,6 +20,10 @@
 const lessonState = defineModel<boolean>("currentLessonState", {
     default: false,
 });
+
+function handleError() {
+    throw new Error("Not implemented");
+}
 </script>
 
 <style scoped>

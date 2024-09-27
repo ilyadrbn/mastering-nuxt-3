@@ -100,4 +100,4 @@ export default {
             ],
         },
     ],
-};
+} as ICourse;

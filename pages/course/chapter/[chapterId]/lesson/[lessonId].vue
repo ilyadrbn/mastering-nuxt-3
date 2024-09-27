@@ -1,12 +1,12 @@
 <template>
     <div>
         <p class="mb-1 mt-0 font-bold uppercase text-slate-400">
-            Lesson {{ chapter?.number }} - {{ lesson?.number }}
+            Lesson {{ chapter.number }} - {{ lesson.number }}
         </p>
-        <h2 class="m-0 text-3xl font-bold">{{ lesson?.title }}</h2>
+        <h2 class="m-0 text-3xl font-bold">{{ lesson.title }}</h2>
         <div class="mb-8 mt-2 flex space-x-4">
             <NuxtLink
-                v-if="lesson?.sourceUrl"
+                v-if="lesson.sourceUrl"
                 class="text-md text-grey-500 font-normal underline hover:text-blue-500"
                 :to="lesson.sourceUrl"
                 target="_blank"
@@ -14,7 +14,7 @@
                 Download Source Code
             </NuxtLink>
             <NuxtLink
-                v-if="lesson?.downloadUrl"
+                v-if="lesson.downloadUrl"
                 class="text-md text-grey-500 font-normal underline hover:text-blue-500"
                 :to="lesson.downloadUrl"
                 target="_blank"
@@ -23,10 +23,10 @@
             </NuxtLink>
         </div>
         <VideoPlayer
-            v-if="lesson?.videoId"
+            v-if="lesson.videoId"
             :video-id="lesson.videoId.toString()"
         />
-        <p class="mb-4">{{ lesson?.text }}</p>
+        <p class="mb-4">{{ lesson.text }}</p>
         <!-- ? https://nuxt.com/docs/guide/concepts/rendering -->
         <!-- ? https://nuxt.com/docs/api/components/client-only -->
         <!-- я так понимаю <ClientOnly /> отключает сср для этого компонента и рендерит его на стороне клиента и по итогу отключает гидратацию. т.е. компонент грузится как в обычной SPA. Можно добавить в имя компонента  .client, будет то же самое "LessonCompleteButton.client.vue" -->
@@ -42,26 +42,21 @@
 </template>
 
 <script lang="ts" setup>
-import type { IChapter, ILesson } from "~/composables/useCourse";
 import type { RemovableRef } from "@vueuse/core";
 
 const course = useCourse();
 const route = useRoute();
 
-const chapter: ComputedRef<IChapter | null> = computed(() => {
-    return (
-        course.chapters.find(
-            (chapter) => chapter.slug === route.params.chapterId,
-        ) ?? null
-    );
+const chapter: ComputedRef<IChapter> = computed(() => {
+    return course.chapters.find(
+        (chapter) => chapter.slug === route.params.chapterId,
+    )!;
 });
 
-const lesson: ComputedRef<ILesson | null> = computed(() => {
-    return (
-        chapter.value?.lessons.find(
-            (lesson: { slug: string }) => lesson.slug === route.params.lessonId,
-        ) ?? null
-    );
+const lesson: ComputedRef<ILesson> = computed(() => {
+    return chapter.value?.lessons.find(
+        (lesson: { slug: string }) => lesson.slug === route.params.lessonId,
+    )!;
 });
 
 const titleMeta: ComputedRef<string> = computed(() => {

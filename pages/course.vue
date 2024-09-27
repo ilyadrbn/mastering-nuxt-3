@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <main>
         <div class="prose mb-12">
             <h1>
                 <span class="font-medium">
@@ -10,7 +10,7 @@
         </div>
 
         <div class="flex flex-grow flex-row justify-center">
-            <div
+            <header
                 class="prose mr-4 flex min-w-[20ch] max-w-[30ch] flex-col rounded-md bg-white p-8"
             >
                 <h3 class="mb-6 font-bold">Chapters</h3>
@@ -20,12 +20,12 @@
                             <h4 class="font-bold">{{ chapter.title }}</h4>
                             <NuxtLink
                                 v-for="(lesson, index) in chapter.lessons"
-                                :key="lesson.downloadUrl"
+                                :key="lesson.slug"
                                 class="mb-2 inline-block font-medium hover:text-blue-500"
                                 :to="lesson.path"
                                 :class="
                                     lesson.slug ===
-                                    ($route as any).params.lessonId
+                                    ($route as RouteRecordInfo).params.lessonId
                                         ? 'text-blue-500'
                                         : 'text-gray-500'
                                 "
@@ -34,17 +34,38 @@
                         </li>
                     </ol>
                 </nav>
-            </div>
+            </header>
 
             <div class="prose w-[65ch] rounded-md bg-white p-12">
-                <NuxtPage />
+                <!-- ? В случае ошибки внутри NuxtPage покажет новый темплейт, темплейт обязательно должен быть со слотом error https://nuxt.com/docs/api/components/nuxt-error-boundary-->
+                <NuxtErrorBoundary>
+                    <NuxtPage />
+                    <template #error="{ error }">
+                        <div class="prose">
+                            <h3>Something went wrong</h3>
+                            <p>{{ error }}</p>
+                        </div>
+                        <button
+                            @click.prevent="resetError(error)"
+                            class="rounded bg-green-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-green-400"
+                        >
+                            Try again
+                        </button>
+                    </template>
+                </NuxtErrorBoundary>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import type { RouteRecordInfo } from "vue-router";
+
 const { chapters } = useCourse();
+
+function resetError(error: any) {
+    error.value = null;
+}
 
 // ? можно указать лэйаут так, а можно внутри app.vue файла в аттрибуте name
 // definePageMeta({
