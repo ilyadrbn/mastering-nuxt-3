@@ -47,6 +47,38 @@ import type { RemovableRef } from "@vueuse/core";
 const course = useCourse();
 const route = useRoute();
 
+definePageMeta({
+    validate: async (route) => {
+        const chapter: ComputedRef<IChapter> = computed(() => {
+            return course.chapters.find(
+                (chapter) => chapter.slug === route.params.chapterId,
+            )!;
+        });
+
+        if (!chapter) {
+            throw createError({
+                statusCode: 404,
+                message: "Chapter not found",
+            });
+        }
+
+        const lesson: ComputedRef<ILesson> = computed(() => {
+            return chapter.value?.lessons.find(
+                (lesson: { slug: string }) =>
+                    lesson.slug === route.params.lessonId,
+            )!;
+        });
+        if (!lesson) {
+            throw createError({
+                statusCode: 404,
+                message: "Lesson not found",
+            });
+        }
+
+        return true;
+    },
+});
+
 const chapter: ComputedRef<IChapter> = computed(() => {
     return course.chapters.find(
         (chapter) => chapter.slug === route.params.chapterId,

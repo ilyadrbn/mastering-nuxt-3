@@ -37,7 +37,7 @@
             </header>
 
             <div class="prose w-[65ch] rounded-md bg-white p-12">
-                <!-- ? В случае ошибки внутри NuxtPage покажет новый темплейт, темплейт обязательно должен быть со слотом error https://nuxt.com/docs/api/components/nuxt-error-boundary-->
+                <!-- ? В случае ошибки внутри NuxtPage, NuxtErrorBoundary покажет новый темплейт, темплейт обязательно должен быть со слотом error https://nuxt.com/docs/api/components/nuxt-error-boundary-->
                 <NuxtErrorBoundary>
                     <NuxtPage />
                     <template #error="{ error }">
@@ -63,7 +63,9 @@ import type { RouteRecordInfo } from "vue-router";
 
 const { chapters } = useCourse();
 
-function resetError(error: any) {
+async function resetError(error: any) {
+    // ? что-то типо router.push() из vue router https://nuxt.com/docs/api/utils/navigate-to
+    await navigateTo("/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3");
     error.value = null;
 }
 
