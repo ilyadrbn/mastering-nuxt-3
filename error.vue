@@ -19,7 +19,6 @@
 
 <script lang="ts" setup>
 const error = useError();
-console.log(error);
 
 function handleError() {
     // ? https://nuxt.com/docs/api/utils/clear-error
