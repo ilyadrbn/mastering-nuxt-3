@@ -42,19 +42,18 @@
 </template>
 
 <script lang="ts" setup>
-import type { RemovableRef } from "@vueuse/core";
-
 const course = useCourse();
 const route = useRoute();
 
+// ? route validation
 definePageMeta({
     validate: async (route) => {
-        const chapter: ComputedRef<IChapter> = computed(() => {
-            return course.chapters.find(
-                (chapter) => chapter.slug === route.params.chapterId,
-            )!;
-        });
+        // * здесь мы не используем реактивность, валидатор и так вызывается при каждом переходе на страницу
+        const course = useCourse();
 
+        const chapter = course.chapters.find(
+            (chapter) => chapter.slug === route.params.chapterId,
+        )!;
         if (!chapter) {
             throw createError({
                 statusCode: 404,
@@ -62,12 +61,9 @@ definePageMeta({
             });
         }
 
-        const lesson: ComputedRef<ILesson> = computed(() => {
-            return chapter.value?.lessons.find(
-                (lesson: { slug: string }) =>
-                    lesson.slug === route.params.lessonId,
-            )!;
-        });
+        const lesson = chapter.lessons.find(
+            (lesson: { slug: string }) => lesson.slug === route.params.lessonId,
+        )!;
         if (!lesson) {
             throw createError({
                 statusCode: 404,
@@ -86,7 +82,7 @@ const chapter: ComputedRef<IChapter> = computed(() => {
 });
 
 const lesson: ComputedRef<ILesson> = computed(() => {
-    return chapter.value?.lessons.find(
+    return chapter.value.lessons.find(
         (lesson: { slug: string }) => lesson.slug === route.params.lessonId,
     )!;
 });
@@ -118,13 +114,13 @@ useHead({
 ?       [false, false , false]
     ?] */
 
-const lessonsState: RemovableRef<boolean[][]> = useLocalStorage(
+const lessonsState: Ref<boolean[][]> = useLocalStorage(
     "lessonsState",
     course.chapters.map((chapter) => {
         return chapter.lessons.map(() => false);
     }),
 );
 
-// ? useState() - nuxt composable. its like session storage
+// ? useState() - nuxt composable. simple state management
 // ? useLocalStorage() - vueuse composable. written into localstorage
 </script>

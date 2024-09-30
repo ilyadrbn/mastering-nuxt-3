@@ -8,8 +8,8 @@
                 {{ error ? error.message : "Something went wrong" }}
             </p>
             <button
-                @click.prevent="handleError"
                 class="inline-block rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                @click.prevent="handleError"
             >
                 Take me home
             </button>
@@ -19,13 +19,13 @@
 
 <script lang="ts" setup>
 const error = useError();
+console.log(error);
 
 function handleError() {
+    // ? https://nuxt.com/docs/api/utils/clear-error
     clearError({
         redirect:
             "/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3",
     });
 }
 </script>
-
-<style scoped></style>

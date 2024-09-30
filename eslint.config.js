@@ -19,6 +19,7 @@ export default withNuxt([
     {
         rules: {
             "vue/multi-word-component-names": "off",
+            "no-undef": "off",
         },
     },
 ]);

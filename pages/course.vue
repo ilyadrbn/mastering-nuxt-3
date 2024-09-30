@@ -46,8 +46,8 @@
                             <p>{{ error }}</p>
                         </div>
                         <button
-                            @click.prevent="resetError(error)"
                             class="rounded bg-green-500 px-4 py-2 font-bold text-white hover:cursor-pointer hover:bg-green-400"
+                            @click.prevent="resetError(error)"
                         >
                             Try again
                         </button>
@@ -60,12 +60,15 @@
 
 <script lang="ts" setup>
 import type { RouteRecordInfo } from "vue-router";
+import type { NuxtError } from "#app";
 
 const { chapters } = useCourse();
 
-async function resetError(error: any) {
+async function resetError(error: NuxtError & { value: null }) {
     // ? что-то типо router.push() из vue router https://nuxt.com/docs/api/utils/navigate-to
-    await navigateTo("/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3");
+    await navigateTo(
+        "/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3",
+    );
     error.value = null;
 }
 
