@@ -1,11 +1,12 @@
 <template>
     <main>
-        <div class="prose mb-12">
+        <div class="mb-4 flex w-full items-center justify-between">
             <h1>
                 <span class="font-medium">
                     <span class="font-bold">{{ title }}</span>
                 </span>
             </h1>
+            <UserCard />
         </div>
 
         <div class="flex flex-grow flex-row justify-center">
@@ -24,7 +25,7 @@
                                 :to="lesson.path"
                                 :class="
                                     lesson.slug ===
-                                    ($route as any).params.lessonId
+                                    ($route as RouteLocationNormalizedLoadedGeneric).params.lessonId
                                         ? 'text-blue-500'
                                         : 'text-gray-500'
                                 "
@@ -58,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { RouteRecordInfo } from "vue-router";
+import type { RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import type { NuxtError } from "#app";
 
 // ? можно указать лэйаут так, а можно внутри app.vue файла в аттрибуте name

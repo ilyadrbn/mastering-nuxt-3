@@ -18,4 +18,7 @@ export default defineNuxtConfig({
         typeCheck: true,
     },
     modules: ["@vueuse/nuxt", "@nuxt/eslint", "@nuxtjs/supabase"],
+    supabase: {
+        redirect: false,
+    },
 });
