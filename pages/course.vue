@@ -24,7 +24,7 @@
                                 :to="lesson.path"
                                 :class="
                                     lesson.slug ===
-                                    ($route as RouteRecordInfo).params.lessonId
+                                    ($route as any).params.lessonId
                                         ? 'text-blue-500'
                                         : 'text-gray-500'
                                 "
