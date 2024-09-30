@@ -47,13 +47,45 @@ const route = useRoute();
 
 // ? route validation
 definePageMeta({
-    validate: async (route) => {
-        // * здесь мы не используем реактивность, валидатор и так вызывается при каждом переходе на страницу
-        const course = useCourse();
+    middleware: [
+        function ({ params }, from) {
+            // ? мы повторно инициализируем useCourse, потому что внутри definePageMeta() нет доступа к внешним переменным
+            const course = useCourse();
 
-        const chapter = course.chapters.find(
-            (chapter) => chapter.slug === route.params.chapterId,
-        )!;
+            const chapter = course.chapters.find(
+                (chapter) => chapter.slug === params.chapterId,
+            )!;
+            if (!chapter) {
+                return abortNavigation(
+                    createError({
+                        statusCode: 404,
+                        message: "Chapter not found",
+                    }),
+                );
+            }
+
+            const lesson = chapter.lessons.find(
+                (lesson: { slug: string }) => lesson.slug === params.lessonId,
+            )!;
+            if (!lesson) {
+                return abortNavigation(
+                    createError({
+                        statusCode: 404,
+                        message: "Lesson not found",
+                    }),
+                );
+            }
+        },
+        "auth",
+    ],
+    /* ? validate это синтаксический сахар над middleware, можно использовать либо то, либо то
+    validate: async (route) => {
+        const chapter: ComputedRef<IChapter> = computed(() => {
+            return course.chapters.find(
+                (chapter) => chapter.slug === route.params.chapterId,
+            )!;
+        });
+
         if (!chapter) {
             throw createError({
                 statusCode: 404,
@@ -61,9 +93,12 @@ definePageMeta({
             });
         }
 
-        const lesson = chapter.lessons.find(
-            (lesson: { slug: string }) => lesson.slug === route.params.lessonId,
-        )!;
+        const lesson: ComputedRef<ILesson> = computed(() => {
+            return chapter.value?.lessons.find(
+                (lesson: { slug: string }) =>
+                    lesson.slug === route.params.lessonId,
+            )!;
+        });
         if (!lesson) {
             throw createError({
                 statusCode: 404,
@@ -73,6 +108,7 @@ definePageMeta({
 
         return true;
     },
+    */
 });
 
 const chapter: ComputedRef<IChapter> = computed(() => {

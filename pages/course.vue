@@ -3,8 +3,7 @@
         <div class="prose mb-12">
             <h1>
                 <span class="font-medium">
-                    Course:
-                    <span class="font-bold">Mastering Nuxt 3</span>
+                    <span class="font-bold">{{ title }}</span>
                 </span>
             </h1>
         </div>
@@ -62,18 +61,20 @@
 import type { RouteRecordInfo } from "vue-router";
 import type { NuxtError } from "#app";
 
-const { chapters } = useCourse();
+// ? можно указать лэйаут так, а можно внутри app.vue файла в аттрибуте name
+definePageMeta({
+    layout: "default",
+});
+
+const { chapters, title } = useCourse();
+const firstLesson = useFirstLesson();
 
 async function resetError(error: NuxtError & { value: null }) {
-    // ? что-то типо router.push() из vue router https://nuxt.com/docs/api/utils/navigate-to
-    await navigateTo(
-        "/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3",
-    );
+    // ? что-то типо router.push() из vue router https://nuxt.com/docs/api/utils/navigate-to,
+    // ? только обрабатывает и серверные ошибки, а не только клиентские
+    await navigateTo(firstLesson.path, {
+        redirectCode: 301,
+    });
     error.value = null;
 }
-
-// ? можно указать лэйаут так, а можно внутри app.vue файла в аттрибуте name
-// definePageMeta({
-//     layout: "custom",
-// });
 </script>

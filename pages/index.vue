@@ -1,5 +1,9 @@
 <template>
-    <div><h2>Main Page</h2></div>
+    <NuxtLink class="font-medium underline" :to="firstLesson">
+        Go to first lesson
+    </NuxtLink>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const firstLesson = useFirstLesson();
+</script>
