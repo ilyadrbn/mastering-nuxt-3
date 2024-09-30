@@ -17,5 +17,5 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: true,
     },
-    modules: ["@vueuse/nuxt", "@nuxt/eslint"],
+    modules: ["@vueuse/nuxt", "@nuxt/eslint", "@nuxtjs/supabase"],
 });
